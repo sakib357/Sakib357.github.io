@@ -58,3 +58,13 @@
 
       const avg = dataArray.reduce((a, b) => a + b, 0) / dataArray.length;
       const scale = 1 + (avg / 256); // Scale effect
+
+      beatText.style.transform = `scale(${scale.toFixed(2)})`;
+    }
+
+    audio.onplay = () => {
+      context.resume().then(animate);
+    };
+  </script>
+</body>
+</html>
