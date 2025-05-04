@@ -12,15 +12,16 @@
       background-color: #fdfdfd;
       color: #333;
     }
-    video {
-      max-width: 90%;
-      height: auto;
-      margin-top: 20px;
-      cursor: pointer; /* Makes it look clickable */
-    }
+
     h1 {
       font-size: 3em;
+      transition: transform 0.1s ease-in-out;
     }
+
+    video, audio {
+      margin-top: 20px;
+    }
+
     p {
       font-size: 1.2em;
       margin-top: 20px;
@@ -28,24 +29,32 @@
   </style>
 </head>
 <body>
-  <h1>Chandulike</h1>
-  <video id="myVideo" width="100%" loop>
-    <source src="video.mp4" type="video/mp4">
-    Your browser does not support the video tag.
-  </video>
+  <h1 id="beatText">Chandulike</h1>
+
+  <audio id="audio" controls>
+    <source src="your-audio.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
   <p>Dab on it Wagwaan.</p>
 
   <script>
-    const video = document.getElementById("myVideo");
+    const audio = document.getElementById('audio');
+    const beatText = document.getElementById('beatText');
 
-    // Add a click event listener to play the video when clicked
-    video.addEventListener("click", function() {
-      if (video.paused) {
-        video.play();
-      } else {
-        video.pause(); // If the video is already playing, pause it
-      }
-    });
-  </script>
-</body>
-</html>
+    const context = new (window.AudioContext || window.webkitAudioContext)();
+    const src = context.createMediaElementSource(audio);
+    const analyser = context.createAnalyser();
+
+    src.connect(analyser);
+    analyser.connect(context.destination);
+
+    analyser.fftSize = 256;
+    const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+    function animate() {
+      requestAnimationFrame(animate);
+      analyser.getByteFrequencyData(dataArray);
+
+      const avg = dataArray.reduce((a, b) => a + b, 0) / dataArray.length;
+      const scale = 1 + (avg / 256); // Scale effect
