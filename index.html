@@ -9,13 +9,13 @@
       font-family: Arial, sans-serif;
       text-align: center;
       padding: 60px;
-      background-color: #fdfdfd;
-      color: #333;
+      background-color: #111;
+      color: #fff;
     }
 
     h1 {
       font-size: 3em;
-      transition: transform 0.1s ease-in-out;
+      transition: transform 0.1s ease-in-out, color 0.1s, text-shadow 0.1s;
     }
 
     video {
@@ -25,11 +25,14 @@
       display: block;
       margin-left: auto;
       margin-right: auto;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
     }
 
     p {
       font-size: 1.2em;
       margin-top: 20px;
+      color: #ccc;
     }
   </style>
 </head>
@@ -62,9 +65,14 @@
       analyser.getByteFrequencyData(dataArray);
 
       const avg = dataArray.reduce((a, b) => a + b, 0) / dataArray.length;
-      const scale = 1 + (avg / 256); // Pulse effect
+      const scale = 1 + (avg / 300);
+      const glow = avg * 0.4;
+      const colorIntensity = Math.min(255, Math.round(avg * 2));
+      const color = `rgb(${colorIntensity}, ${255 - colorIntensity}, ${255})`;
 
       beatText.style.transform = `scale(${scale.toFixed(2)})`;
+      beatText.style.color = color;
+      beatText.style.textShadow = `0 0 ${glow}px ${color}`;
     }
 
     video.onplay = () => {
