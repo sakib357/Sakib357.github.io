@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Goodbye</title>
+  <style>
+    body {
+      background: black;
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding-top: 100px;
+    }
+
+    h1 {
+      font-size: 3em;
+    }
+  </style>
+</head>
+<body>
+  <h1>Goodnight Chandulike</h1>
+  <p>Channel off-air...</p>
+
+  <audio id="beep" autoplay>
+    <source src="beep.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    // If autoplay fails (some browsers), ensure it plays on user interaction
+    const beep = document.getElementById('beep');
+    document.addEventListener('click', () => beep.play());
+  </script>
+</body>
+</html>
